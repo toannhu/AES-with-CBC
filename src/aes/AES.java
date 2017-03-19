@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package aes;
+
 import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -208,8 +209,8 @@ public class AES extends javax.swing.JFrame {
                         .addComponent(SaveEncrypt)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(SaveAsEncrypt))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(38, 38, 38))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(36, 36, 36))
         );
 
         jTabbedPane1.addTab("Encrypt", jPanel1);
@@ -251,13 +252,13 @@ public class AES extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addContainerGap(24, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 481, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -328,68 +329,68 @@ public class AES extends javax.swing.JFrame {
 
     private void BrowseTab1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BrowseTab1ActionPerformed
         // TODO add your handling code here:
-        this.jFileChooser1.setCurrentDirectory(new File(System.getProperty("user.dir")));
-        int result = this.jFileChooser1.showOpenDialog(this);
-        JFileChooser var10001 = this.jFileChooser1;
+        jFileChooser1.setCurrentDirectory(new File(System.getProperty("user.dir")));
+        int result = jFileChooser1.showOpenDialog(null);
+        JFileChooser var10001 = jFileChooser1;
         if(result == 0) {
-            File selectedFile = this.jFileChooser1.getSelectedFile();
+            File selectedFile = jFileChooser1.getSelectedFile();
             int i = selectedFile.getName().lastIndexOf(46);
-            this.filename = selectedFile.getName().substring(0, i);
+            filename = selectedFile.getName().substring(0, i);
             if(i >= 0) {
-                this.extension = selectedFile.getName().substring(i + 1);
+                extension = selectedFile.getName().substring(i + 1);
             }
 
             JOptionPane.showMessageDialog((Component)null, "Selected file: " + selectedFile.getAbsolutePath());
-            this.path = Paths.get(selectedFile.getAbsolutePath(), new String[0]);
-            this.textPane1 = this.textPane1 + "Load file Done!\nPlease click Encrypt Button!\n";
-            this.jTextPane1.setText(this.textPane1);
+            path = Paths.get(selectedFile.getAbsolutePath(), new String[0]);
+            textPane1 = textPane1 + "Load file Done!\nPlease click Encrypt Button!\n";
+            jTextPane1.setText(textPane1);
         }
     }//GEN-LAST:event_BrowseTab1ActionPerformed
 
     private void EncryptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EncryptActionPerformed
         // TODO add your handling code here:
-        this.time = 0L;
+        time = 0L;
         long startTime = System.currentTimeMillis();
-        String key = this.jTextField1.getText();
+        String key = jTextField1.getText();
 
         try {
-            if(this.jTextField1.getText() != null) {
-                this.clean = Files.readAllBytes(this.path);
-                this.encrypted = encrypt(this.clean, key);
+            if(jTextField1.getText() != null) {
+                clean = Files.readAllBytes(path);
+                encrypted = encrypt(clean, key);
                 JOptionPane.showMessageDialog((Component)null, "Encrypting Done. Please Save File!");
-                this.textPane1 = this.textPane1 + "Encrypting Done. Please Save File!\n";
-                this.doneEncrypt = true;
-                this.jTextPane1.setText(this.textPane1);
+                textPane1 = textPane1 + "Encrypting Done. Please Save File!\n";
+                doneEncrypt = true;
+                jTextPane1.setText(textPane1);
             } else {
                 JOptionPane.showMessageDialog((Component)null, "Please input key and browse file before encrypting");
-                this.textPane1 = this.textPane1 + "Please input key and browse file before encrypting\n";
-                this.jTextPane1.setText(this.textPane1);
+                textPane1 = textPane1 + "Please input key and browse file before encrypting\n";
+                jTextPane1.setText(textPane1);
             }
         } catch (Exception var7) {
             Logger.getLogger(AES.class.getName()).log(Level.SEVERE, (String)null, var7);
         }
 
         long endTime = System.currentTimeMillis();
-        this.time = endTime - startTime;
-        JOptionPane.showMessageDialog((Component)null, "Time to encrypting file: " + this.time + " milliseconds");
-        this.textPane1 = this.textPane1 + "Time to encrypting file: " + this.time + " milliseconds\n";
-        this.jTextPane1.setText(this.textPane1);
+        time = endTime - startTime;
+        JOptionPane.showMessageDialog((Component)null, "Time to encrypting file: " + time + " milliseconds");
+        textPane1 = textPane1 + "Time to encrypting file: " + time + " milliseconds\n";
+        jTextPane1.setText(textPane1);
     }//GEN-LAST:event_EncryptActionPerformed
 
     private void SaveAsEncryptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveAsEncryptActionPerformed
         // TODO add your handling code here:
-        this.jFileChooser1.setCurrentDirectory(new File("user.dir"));
-        int retrival = this.jFileChooser1.showSaveDialog((Component)null);
-        if(this.doneEncrypt) {
-            JFileChooser var10001 = this.jFileChooser1;
+        jFileChooser1.setCurrentDirectory(new File("user.dir"));
+        int retrival = jFileChooser1.showSaveDialog((Component)null);
+        if(doneEncrypt) {
+            JFileChooser var10001 = jFileChooser1;
             if(retrival == 0) {
                 try {
-                    FileOutputStream ex = new FileOutputStream(this.jFileChooser1.getSelectedFile() + "." + this.extension);
-                    ex.write(this.encrypted);
+                    FileOutputStream ex = new FileOutputStream(jFileChooser1.getSelectedFile() + "." + extension);
+                    ex.write(encrypted);
                     ex.close();
-                    JOptionPane.showMessageDialog((Component)null, "Save file: " + this.jFileChooser1.getSelectedFile().getAbsolutePath() + "." + this.extension);
-                    this.textPane1 = this.textPane1 + "Save file: " + this.jFileChooser1.getSelectedFile().getAbsolutePath() + "." + this.extension + "\n";
-                    this.jTextPane1.setText(this.textPane1);
+                    JOptionPane.showMessageDialog((Component)null, "Save file: " + jFileChooser1.getSelectedFile().getAbsolutePath() + "." + extension);
+                    textPane1 = textPane1 + "Save file: " + jFileChooser1.getSelectedFile().getAbsolutePath() + "." + extension + "\n";
+                    jTextPane1.setText(textPane1);
                 } catch (Exception var4) {
                     Logger.getLogger(AES.class.getName()).log(Level.SEVERE, (String)null, var4);
                 }
@@ -401,14 +402,14 @@ public class AES extends javax.swing.JFrame {
 
     private void SaveEncryptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveEncryptActionPerformed
         // TODO add your handling code here:
-         if(this.doneEncrypt) {
+         if(doneEncrypt) {
             try {
-                FileOutputStream ex = new FileOutputStream(System.getProperty("user.dir") + "\\test\\" + this.filename + "_encrypted." + this.extension);
-                ex.write(this.encrypted);
+                FileOutputStream ex = new FileOutputStream(System.getProperty("user.dir") + "\\test\\" + filename + "_encrypted." + extension);
+                ex.write(encrypted);
                 ex.close();
-                JOptionPane.showMessageDialog((Component)null, "Save file: " + System.getProperty("user.dir") + "\\test\\" + this.filename + "_encrypted." + this.extension);
-                this.textPane1 = this.textPane1 + "Save file: " + System.getProperty("user.dir") + "\\test\\" + this.filename + "_encrypted." + this.extension + "\n";
-                this.jTextPane1.setText(this.textPane1);
+                JOptionPane.showMessageDialog((Component)null, "Save file: " + System.getProperty("user.dir") + "\\test\\" + filename + "_encrypted." + extension);
+                textPane1 = textPane1 + "Save file: " + System.getProperty("user.dir") + "\\test\\" + filename + "_encrypted." + extension + "\n";
+                jTextPane1.setText(textPane1);
             } catch (IOException var3) {
                 Logger.getLogger(AES.class.getName()).log(Level.SEVERE, (String)null, var3);
             }
@@ -417,68 +418,68 @@ public class AES extends javax.swing.JFrame {
 
     private void BrowseTab2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BrowseTab2ActionPerformed
         // TODO add your handling code here:
-        this.jFileChooser1.setCurrentDirectory(new File(System.getProperty("user.dir")));
-        int result = this.jFileChooser1.showOpenDialog(this);
-        JFileChooser var10001 = this.jFileChooser1;
+        jFileChooser1.setCurrentDirectory(new File(System.getProperty("user.dir")));
+        int result = jFileChooser1.showOpenDialog(null);
+        JFileChooser var10001 = jFileChooser1;
         if(result == 0) {
-            File selectedFile = this.jFileChooser1.getSelectedFile();
+            File selectedFile = jFileChooser1.getSelectedFile();
             int i = selectedFile.getName().lastIndexOf(46);
-            this.filename = selectedFile.getName().substring(0, i);
+            filename = selectedFile.getName().substring(0, i);
             if(i >= 0) {
-                this.extension = selectedFile.getName().substring(i + 1);
+                extension = selectedFile.getName().substring(i + 1);
             }
 
             JOptionPane.showMessageDialog((Component)null, "Selected file: " + selectedFile.getAbsolutePath());
-            this.path = Paths.get(selectedFile.getAbsolutePath(), new String[0]);
-            this.textPane2 = this.textPane2 + "Load file Done!\nPlease click Decrypt Button!\n";
-            this.jTextPane2.setText(this.textPane2);
+            path = Paths.get(selectedFile.getAbsolutePath(), new String[0]);
+            textPane2 = textPane2 + "Load file Done!\nPlease click Decrypt Button!\n";
+            jTextPane2.setText(textPane2);
         }
     }//GEN-LAST:event_BrowseTab2ActionPerformed
 
     private void DecryptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DecryptActionPerformed
         // TODO add your handling code here:
-        String key = this.jTextField2.getText();
-        this.time = 0L;
+        String key = jTextField2.getText();
+        time = 0L;
         long startTime = System.currentTimeMillis();
 
         try {
-            if(this.jTextField2.getText() != null) {
-                this.encrypted = Files.readAllBytes(this.path);
-                this.decrypted = decrypt(this.encrypted, key);
+            if(jTextField2.getText() != null) {
+                encrypted = Files.readAllBytes(path);
+                decrypted = decrypt(encrypted, key);
                 JOptionPane.showMessageDialog((Component)null, "Decrypting Done. Please Save File!");
-                this.textPane2 = this.textPane2 + "Decrypting Done. Please Save File!\n";
-                this.doneDecrypt = true;
+                textPane2 = textPane2 + "Decrypting Done. Please Save File!\n";
+                doneDecrypt = true;
             } else {
                 JOptionPane.showMessageDialog((Component)null, "Please input key and browse text file before decrypting");
-                this.textPane2 = this.textPane2 + "Please input key and browse file before decrypting\n";
+                textPane2 = textPane2 + "Please input key and browse file before decrypting\n";
             }
 
-            this.jTextPane2.setText(this.textPane2);
+            jTextPane2.setText(textPane2);
         } catch (Exception var7) {
             Logger.getLogger(AES.class.getName()).log(Level.SEVERE, (String)null, var7);
         }
 
         long endTime = System.currentTimeMillis();
-        this.time = endTime - startTime;
-        JOptionPane.showMessageDialog((Component)null, "Time to decrypting file: " + this.time + " milliseconds");
-        this.textPane2 = this.textPane2 + "Time to decrypting file: " + this.time + " milliseconds\n";
-        this.jTextPane2.setText(this.textPane1);
+        time = endTime - startTime;
+        JOptionPane.showMessageDialog((Component)null, "Time to decrypting file: " + time + " milliseconds");
+        textPane2 = textPane2 + "Time to decrypting file: " + time + " milliseconds\n";
+        jTextPane2.setText(textPane2);
     }//GEN-LAST:event_DecryptActionPerformed
 
     private void SaveAsDecryptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveAsDecryptActionPerformed
         // TODO add your handling code here:
-        this.jFileChooser1.setCurrentDirectory(new File("user.dir"));
-        int retrival = this.jFileChooser1.showSaveDialog((Component)null);
-        if(this.doneDecrypt) {
-            JFileChooser var10001 = this.jFileChooser1;
+        jFileChooser1.setCurrentDirectory(new File("user.dir"));
+        int retrival = jFileChooser1.showSaveDialog((Component)null);
+        if(doneDecrypt) {
+            JFileChooser var10001 = jFileChooser1;
             if(retrival == 0) {
                 try {
-                    FileOutputStream ex = new FileOutputStream(this.jFileChooser1.getSelectedFile() + "." + this.extension);
-                    ex.write(this.decrypted);
+                    FileOutputStream ex = new FileOutputStream(jFileChooser1.getSelectedFile() + "." + extension);
+                    ex.write(decrypted);
                     ex.close();
-                    JOptionPane.showMessageDialog((Component)null, "Save file: " + this.jFileChooser1.getSelectedFile().getAbsolutePath() + "." + this.extension);
-                    this.textPane2 = this.textPane2 + "Save file: " + this.jFileChooser1.getSelectedFile().getAbsolutePath() + "." + this.extension + "\n";
-                    this.jTextPane2.setText(this.textPane2);
+                    JOptionPane.showMessageDialog((Component)null, "Save file: " + jFileChooser1.getSelectedFile().getAbsolutePath() + "." + extension);
+                    textPane2 = textPane2 + "Save file: " + jFileChooser1.getSelectedFile().getAbsolutePath() + "." + extension + "\n";
+                    jTextPane2.setText(textPane2);
                 } catch (IOException var4) {
                     Logger.getLogger(AES.class.getName()).log(Level.SEVERE, (String)null, var4);
                 }
@@ -490,14 +491,14 @@ public class AES extends javax.swing.JFrame {
 
     private void SaveDecryptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveDecryptActionPerformed
         // TODO add your handling code here:
-        if(this.doneDecrypt) {
+        if(doneDecrypt) {
             try {
-                FileOutputStream ex = new FileOutputStream(System.getProperty("user.dir") + "\\test\\" + this.filename + "_decrypted." + this.extension);
-                ex.write(this.decrypted);
+                FileOutputStream ex = new FileOutputStream(System.getProperty("user.dir") + "\\test\\" + filename + "_decrypted." + extension);
+                ex.write(decrypted);
                 ex.close();
-                JOptionPane.showMessageDialog((Component)null, "Save file: " + System.getProperty("user.dir") + "\\test\\" + this.filename + "_decrypted." + this.extension);
-                this.textPane2 = this.textPane2 + "Save file: " + System.getProperty("user.dir") + "\\test\\" + this.filename + "_decrypted." + this.extension + "\n";
-                this.jTextPane2.setText(this.textPane2);
+                JOptionPane.showMessageDialog((Component)null, "Save file: " + System.getProperty("user.dir") + "\\test\\" + filename + "_decrypted." + extension);
+                textPane2 = textPane2 + "Save file: " + System.getProperty("user.dir") + "\\test\\" + filename + "_decrypted." + extension + "\n";
+                jTextPane2.setText(textPane2);
             } catch (IOException var3) {
                 Logger.getLogger(AES.class.getName()).log(Level.SEVERE, (String)null, var3);
             }
