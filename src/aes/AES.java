@@ -157,6 +157,7 @@ public class AES extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jTextPane1.setEditable(false);
         jScrollPane2.setViewportView(jTextPane1);
 
         BrowseTab1.setText("Browse");
@@ -252,6 +253,7 @@ public class AES extends javax.swing.JFrame {
             }
         });
 
+        jTextPane2.setEditable(false);
         jScrollPane1.setViewportView(jTextPane2);
 
         jLabel4.setText("Key ");
@@ -344,6 +346,7 @@ public class AES extends javax.swing.JFrame {
             }
         });
 
+        jTextArea1.setEditable(false);
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
         jScrollPane3.setViewportView(jTextArea1);
@@ -448,20 +451,95 @@ public class AES extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void ChecksumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ChecksumActionPerformed
+        // TODO add your handling code here:
+        text += hash_raw.equalsIgnoreCase(hash_decrypted) ? "MATCH" : "NO MATCH";
+        JOptionPane.showMessageDialog((Component)null, text);
+        jTextArea1.setText(text + "\n");
+        text = "";
+    }//GEN-LAST:event_ChecksumActionPerformed
+
+    private void HashMd5DecryptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HashMd5DecryptActionPerformed
+        // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            byte[] file = Files.readAllBytes(decrypted_path);
+            byte[] hash = MessageDigest.getInstance("MD5").digest(file);
+            hash_decrypted = DatatypeConverter.printHexBinary(hash);
+            text += "Decrypted file hashed to MD5 is: " + hash_decrypted + "\n";
+            jTextArea1.setText(text);
+        } catch (IOException ex) {
+            Logger.getLogger(AES.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchAlgorithmException ex ) {
+            Logger.getLogger(AES.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_HashMd5DecryptActionPerformed
+
+    private void BrowseDecryptedFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BrowseDecryptedFileActionPerformed
+        // TODO add your handling code here:
+        jFileChooser1.setCurrentDirectory(new File(System.getProperty("user.dir")));
+        int result = jFileChooser1.showOpenDialog(this);
+        if (result == jFileChooser1.APPROVE_OPTION) {
+            File selectedFile = jFileChooser1.getSelectedFile();
+            int i = selectedFile.getName().lastIndexOf(".");
+            filename = selectedFile.getName().substring(0, i);
+            if(i >= 0) {
+                extension = selectedFile.getName().substring(i + 1);
+            }
+
+            JOptionPane.showMessageDialog((Component)null, "Selected file: " + selectedFile.getAbsolutePath());
+            decrypted_path = Paths.get(selectedFile.getAbsolutePath(), new String[0]);
+            jTextField4.setText(selectedFile.getAbsolutePath());
+        }
+    }//GEN-LAST:event_BrowseDecryptedFileActionPerformed
+
+    private void BrowseRawFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BrowseRawFileActionPerformed
+        // TODO add your handling code here:
+        jFileChooser1.setCurrentDirectory(new File(System.getProperty("user.dir")));
+        int result = jFileChooser1.showOpenDialog(this);
+        if (result == jFileChooser1.APPROVE_OPTION) {
+            File selectedFile = jFileChooser1.getSelectedFile();
+            int i = selectedFile.getName().lastIndexOf(".");
+            filename = selectedFile.getName().substring(0, i);
+            if(i >= 0) {
+                extension = selectedFile.getName().substring(i + 1);
+            }
+
+            JOptionPane.showMessageDialog((Component)null, "Selected file: " + selectedFile.getAbsolutePath());
+            raw_path = Paths.get(selectedFile.getAbsolutePath(), new String[0]);
+            jTextField3.setText(selectedFile.getAbsolutePath());
+        }
+    }//GEN-LAST:event_BrowseRawFileActionPerformed
+
+    private void HashMd5RawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HashMd5RawActionPerformed
+        try {
+            // TODO add your handling code here:
+            byte[] file = Files.readAllBytes(raw_path);
+            byte[] hash = MessageDigest.getInstance("MD5").digest(file);
+            hash_raw = DatatypeConverter.printHexBinary(hash);
+            text += "Raw file hashed to MD5 is: " + hash_raw + "\n";
+            jTextArea1.setText(text);
+        } catch (IOException ex) {
+            Logger.getLogger(AES.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchAlgorithmException ex ) {
+            Logger.getLogger(AES.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_HashMd5RawActionPerformed
+
     private void SaveDecryptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveDecryptActionPerformed
         // TODO add your handling code here:
         if(doneDecrypt) {
             try {
                 FileOutputStream ex = new FileOutputStream(System.getProperty("user.dir")+ "\\" + filename + "_decrypted." + extension);
-                ex.write(decrypted);
-                ex.close();
-                JOptionPane.showMessageDialog((Component)null, "Save file: " + System.getProperty("user.dir") + "\\" +  filename + "_decrypted." + extension);
-                textPane2 = textPane2 + "Save file: " + System.getProperty("user.dir") + "\\" + filename + "_decrypted." + extension + "\n";
-                jTextPane2.setText(textPane2);
-            } catch (IOException var3) {
-                Logger.getLogger(AES.class.getName()).log(Level.SEVERE, (String)null, var3);
-            }
-        }
+                    ex.write(decrypted);
+                    ex.close();
+                    JOptionPane.showMessageDialog((Component)null, "Save file: " + System.getProperty("user.dir") + "\\" +  filename + "_decrypted." + extension);
+                        textPane2 = textPane2 + "Save file: " + System.getProperty("user.dir") + "\\" + filename + "_decrypted." + extension + "\n";
+                        jTextPane2.setText(textPane2);
+                    } catch (IOException var3) {
+                        Logger.getLogger(AES.class.getName()).log(Level.SEVERE, (String)null, var3);
+                    }
+                }
     }//GEN-LAST:event_SaveDecryptActionPerformed
 
     private void SaveAsDecryptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveAsDecryptActionPerformed
@@ -519,10 +597,10 @@ public class AES extends javax.swing.JFrame {
     private void BrowseTab2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BrowseTab2ActionPerformed
         // TODO add your handling code here:
         jFileChooser1.setCurrentDirectory(new File(System.getProperty("user.dir")));
-        int result = jFileChooser1.showOpenDialog(null);
-        if(result == 0) {
+        int result = jFileChooser1.showOpenDialog(this);
+        if (result == jFileChooser1.APPROVE_OPTION) {
             File selectedFile = jFileChooser1.getSelectedFile();
-            int i = selectedFile.getName().lastIndexOf(46);
+            int i = selectedFile.getName().lastIndexOf(".");
             filename = selectedFile.getName().substring(0, i);
             if(i >= 0) {
                 extension = selectedFile.getName().substring(i + 1);
@@ -540,15 +618,15 @@ public class AES extends javax.swing.JFrame {
         if(doneEncrypt) {
             try {
                 FileOutputStream ex = new FileOutputStream(System.getProperty("user.dir") + "\\" + filename + "_encrypted." + extension);
-                ex.write(encrypted);
-                ex.close();
-                JOptionPane.showMessageDialog((Component)null, "Save file: " + System.getProperty("user.dir") + "\\" + filename + "_encrypted." + extension);
-                textPane1 = textPane1 + "Save file: " + System.getProperty("user.dir") + "\\" + filename + "_encrypted." + extension + "\n";
-                jTextPane1.setText(textPane1);
-            } catch (IOException var3) {
-                Logger.getLogger(AES.class.getName()).log(Level.SEVERE, (String)null, var3);
-            }
-        }
+                    ex.write(encrypted);
+                    ex.close();
+                    JOptionPane.showMessageDialog((Component)null, "Save file: " + System.getProperty("user.dir") + "\\" + filename + "_encrypted." + extension);
+                        textPane1 = textPane1 + "Save file: " + System.getProperty("user.dir") + "\\" + filename + "_encrypted." + extension + "\n";
+                        jTextPane1.setText(textPane1);
+                    } catch (IOException var3) {
+                        Logger.getLogger(AES.class.getName()).log(Level.SEVERE, (String)null, var3);
+                    }
+                }
     }//GEN-LAST:event_SaveEncryptActionPerformed
 
     private void SaveAsEncryptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveAsEncryptActionPerformed
@@ -607,11 +685,10 @@ public class AES extends javax.swing.JFrame {
     private void BrowseTab1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BrowseTab1ActionPerformed
         // TODO add your handling code here:
         jFileChooser1.setCurrentDirectory(new File(System.getProperty("user.dir")));
-        int result = jFileChooser1.showOpenDialog(null);
-        JFileChooser var10001 = jFileChooser1;
-        if(result == 0) {
+        int result = jFileChooser1.showOpenDialog(this);
+        if (result == jFileChooser1.APPROVE_OPTION) {
             File selectedFile = jFileChooser1.getSelectedFile();
-            int i = selectedFile.getName().lastIndexOf(46);
+            int i = selectedFile.getName().lastIndexOf(".");
             filename = selectedFile.getName().substring(0, i);
             if(i >= 0) {
                 extension = selectedFile.getName().substring(i + 1);
@@ -623,83 +700,9 @@ public class AES extends javax.swing.JFrame {
             jTextPane1.setText(textPane1);
         }
     }//GEN-LAST:event_BrowseTab1ActionPerformed
-    
-    private void BrowseRawFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BrowseRawFileActionPerformed
-        // TODO add your handling code here:
-        jFileChooser1.setCurrentDirectory(new File(System.getProperty("user.dir")));
-        int result = jFileChooser1.showOpenDialog(null);
-        if(result == 0) {
-            File selectedFile = jFileChooser1.getSelectedFile();
-            int i = selectedFile.getName().lastIndexOf(46);
-            filename = selectedFile.getName().substring(0, i);
-            if(i >= 0) {
-                extension = selectedFile.getName().substring(i + 1);
-            }
-
-            JOptionPane.showMessageDialog((Component)null, "Selected file: " + selectedFile.getAbsolutePath());
-            raw_path = Paths.get(selectedFile.getAbsolutePath(), new String[0]);
-            jTextField3.setText(selectedFile.getAbsolutePath());        
-        }
-    }//GEN-LAST:event_BrowseRawFileActionPerformed
-
-    private void BrowseDecryptedFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BrowseDecryptedFileActionPerformed
-        // TODO add your handling code here:
-        jFileChooser1.setCurrentDirectory(new File(System.getProperty("user.dir")));
-        int result = jFileChooser1.showOpenDialog(null);
-        if(result == 0) {
-            File selectedFile = jFileChooser1.getSelectedFile();
-            int i = selectedFile.getName().lastIndexOf(46);
-            filename = selectedFile.getName().substring(0, i);
-            if(i >= 0) {
-                extension = selectedFile.getName().substring(i + 1);
-            }
-
-            JOptionPane.showMessageDialog((Component)null, "Selected file: " + selectedFile.getAbsolutePath());
-            decrypted_path = Paths.get(selectedFile.getAbsolutePath(), new String[0]);
-            jTextField4.setText(selectedFile.getAbsolutePath());        
-        }
-    }//GEN-LAST:event_BrowseDecryptedFileActionPerformed
-    String text = "";
+        String text = "";
     String hash_raw = "";
     String hash_decrypted = "";
-    private void HashMd5RawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HashMd5RawActionPerformed
-        try {
-            // TODO add your handling code here:
-            byte[] file = Files.readAllBytes(raw_path);
-            byte[] hash = MessageDigest.getInstance("MD5").digest(file);
-            hash_raw = DatatypeConverter.printHexBinary(hash);
-            text += "Raw file hashed to MD5 is: " + hash_raw + "\n";
-            jTextArea1.setText(text);
-        } catch (IOException ex) {
-            Logger.getLogger(AES.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NoSuchAlgorithmException ex ) {
-            Logger.getLogger(AES.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_HashMd5RawActionPerformed
-
-    private void HashMd5DecryptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HashMd5DecryptActionPerformed
-        // TODO add your handling code here:
-        try {
-            // TODO add your handling code here:
-            byte[] file = Files.readAllBytes(decrypted_path);
-            byte[] hash = MessageDigest.getInstance("MD5").digest(file);
-            hash_decrypted = DatatypeConverter.printHexBinary(hash);
-            text += "Decrypted file hashed to MD5 is: " + hash_decrypted + "\n";
-            jTextArea1.setText(text);
-        } catch (IOException ex) {
-            Logger.getLogger(AES.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NoSuchAlgorithmException ex ) {
-            Logger.getLogger(AES.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_HashMd5DecryptActionPerformed
-
-    private void ChecksumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ChecksumActionPerformed
-        // TODO add your handling code here:
-        text += hash_raw.equalsIgnoreCase(hash_decrypted) ? "MATCH" : "NO MATCH";
-        JOptionPane.showMessageDialog((Component)null, text);
-        jTextArea1.setText(text + "\n");
-    }//GEN-LAST:event_ChecksumActionPerformed
-
     /**
      * @param args the command line arguments
      */
